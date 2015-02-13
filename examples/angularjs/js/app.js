@@ -6,8 +6,18 @@
  * @type {angular.Module}
  */
 angular.module('todomvc', ['ngRoute'])
-	.config(function ($routeProvider) {
+	.config(function ($routeProvider, $provide) {
 		'use strict';
+
+	    $provide.decorator("$exceptionHandler", ["$delegate", "$window", function($delegate, $window) {
+	      return function (exception, cause) {
+	        if ($window.trackJs) {
+	          $window.trackJs.track(exception);
+	        }
+	        // (Optional) Pass the error through to the delegate formats it for the console
+	        // $delegate(exception, cause);
+	      };
+	    }]);
 
 		var routeConfig = {
 			controller: 'TodoCtrl',
